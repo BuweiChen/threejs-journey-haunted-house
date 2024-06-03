@@ -36,6 +36,14 @@ roof.position.y = 2.5 + 0.75;
 roof.rotation.y = Math.PI * 0.25;
 house.add(roof);
 
+const door = new THREE.Mesh(
+  new THREE.PlaneGeometry(2.2, 2.2),
+  new THREE.MeshStandardMaterial()
+);
+door.position.y = 1;
+door.position.z = 2 + 0.01;
+house.add(door);
+
 scene.add(house);
 
 // Floor
