@@ -19,6 +19,15 @@ const scene = new THREE.Scene();
  * House
  */
 
+const house = new THREE.Group();
+const walls = new THREE.Mesh(
+  new THREE.BoxGeometry(4, 2.5, 4),
+  new THREE.MeshStandardMaterial()
+);
+walls.position.y += 1.25;
+house.add(walls);
+scene.add(house);
+
 // Floor
 const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(20, 20),
