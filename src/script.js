@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Timer } from "three/addons/misc/Timer.js";
 import GUI from "lil-gui";
+import { findSpan } from "three/examples/jsm/curves/NURBSUtils.js";
 
 /**
  * Base
@@ -14,6 +15,38 @@ const canvas = document.querySelector("canvas.webgl");
 
 // Scene
 const scene = new THREE.Scene();
+
+// Textures
+const textureLoader = new THREE.TextureLoader();
+const floorAlphaTexture = textureLoader.load("./floor/alpha.jpg");
+const floorColorTexture = textureLoader.load(
+  "./coast_sand_rocks_02_1k/textures/coast_sand_rocks_02_diff_1k.jpg"
+);
+const floorARMTexture = textureLoader.load(
+  "./coast_sand_rocks_02_1k/textures/coast_sand_rocks_02_arm_1k.jpg"
+);
+const floorNormalTexture = textureLoader.load(
+  "./coast_sand_rocks_02_1k/textures/coast_sand_rocks_02_nor_gl_1k.jpg"
+);
+const floorDisplacementTexture = textureLoader.load(
+  "./coast_sand_rocks_02_1k/textures/coast_sand_rocks_02_disp_1k.jpg"
+);
+floorColorTexture.repeat.set(8, 8);
+floorARMTexture.repeat.set(8, 8);
+floorNormalTexture.repeat.set(8, 8);
+floorDisplacementTexture.repeat.set(8, 8);
+
+const setTextureWrapST = (texture) => {
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+};
+
+setTextureWrapST(floorColorTexture);
+setTextureWrapST(floorARMTexture);
+setTextureWrapST(floorNormalTexture);
+setTextureWrapST(floorDisplacementTexture);
+
+floorColorTexture.colorSpace = THREE.SRGBColorSpace;
 
 /**
  * House
@@ -92,7 +125,16 @@ scene.add(graves);
 // Floor
 const floor = new THREE.Mesh(
   new THREE.PlaneGeometry(20, 20),
-  new THREE.MeshStandardMaterial()
+  new THREE.MeshStandardMaterial({
+    alphaMap: floorAlphaTexture,
+    transparent: true,
+    map: floorColorTexture,
+    aoMap: floorARMTexture,
+    roughnessMap: floorARMTexture,
+    metalnessMap: floorARMTexture,
+    normalMap: floorNormalTexture,
+    displacementMap: floorDisplacementTexture,
+  })
 );
 floor.rotation.x = -Math.PI * 0.5;
 scene.add(floor);
