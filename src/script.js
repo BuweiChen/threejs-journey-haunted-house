@@ -60,6 +60,22 @@ const wallNormalTexture = textureLoader.load(
 
 wallColorTexture.colorSpace = THREE.SRGBColorSpace;
 
+const roofColorTexture = textureLoader.load("./roof_09_1k/roof_09_diff_1k.jpg");
+const roofARMTexture = textureLoader.load("./roof_09_1k/roof_09_arm_1k.jpg");
+const roofNormalTexture = textureLoader.load(
+  "./roof_09_1k/roof_09_nor_gl_1k.jpg"
+);
+
+roofColorTexture.repeat.set(5, 3);
+roofARMTexture.repeat.set(5, 3);
+roofNormalTexture.repeat.set(5, 3);
+
+setTextureWrapST(roofColorTexture);
+setTextureWrapST(roofARMTexture);
+setTextureWrapST(roofNormalTexture);
+
+roofColorTexture.colorSpace = THREE.SRGBColorSpace;
+
 /**
  * House
  */
@@ -81,7 +97,13 @@ house.add(walls);
 
 const roof = new THREE.Mesh(
   new THREE.ConeGeometry(3.5, 1.5, 4),
-  new THREE.MeshStandardMaterial()
+  new THREE.MeshStandardMaterial({
+    map: roofColorTexture,
+    aoMap: roofARMTexture,
+    roughnessMap: roofARMTexture,
+    metalnessMap: roofARMTexture,
+    normalMap: roofNormalTexture,
+  })
 );
 roof.position.y = 2.5 + 0.75;
 roof.rotation.y = Math.PI * 0.25;
