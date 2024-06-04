@@ -48,6 +48,18 @@ setTextureWrapST(floorDisplacementTexture);
 
 floorColorTexture.colorSpace = THREE.SRGBColorSpace;
 
+const wallColorTexture = textureLoader.load(
+  "./castle_brick_broken_06_1k/textures/castle_brick_broken_06_diff_1k.jpg"
+);
+const wallARMTexture = textureLoader.load(
+  "./castle_brick_broken_06_1k/textures/castle_brick_broken_06_arm_1k.jpg"
+);
+const wallNormalTexture = textureLoader.load(
+  "./castle_brick_broken_06_1k/textures/castle_brick_broken_06_nor_gl_1k.jpg"
+);
+
+wallColorTexture.colorSpace = THREE.SRGBColorSpace;
+
 /**
  * House
  */
@@ -56,7 +68,13 @@ const house = new THREE.Group();
 
 const walls = new THREE.Mesh(
   new THREE.BoxGeometry(4, 2.5, 4),
-  new THREE.MeshStandardMaterial()
+  new THREE.MeshStandardMaterial({
+    map: wallColorTexture,
+    aoMap: wallARMTexture,
+    roughnessMap: wallARMTexture,
+    metalnessMap: wallARMTexture,
+    normalMap: wallNormalTexture,
+  })
 );
 walls.position.y += 1.25;
 house.add(walls);
@@ -135,6 +153,7 @@ const floor = new THREE.Mesh(
     normalMap: floorNormalTexture,
     displacementMap: floorDisplacementTexture,
     displacementScale: 0.3,
+    displacementBias: -0.2,
   })
 );
 floor.rotation.x = -Math.PI * 0.5;
