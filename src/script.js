@@ -124,7 +124,7 @@ scene.add(graves);
 
 // Floor
 const floor = new THREE.Mesh(
-  new THREE.PlaneGeometry(20, 20),
+  new THREE.PlaneGeometry(20, 20, 100, 100),
   new THREE.MeshStandardMaterial({
     alphaMap: floorAlphaTexture,
     transparent: true,
@@ -134,10 +134,24 @@ const floor = new THREE.Mesh(
     metalnessMap: floorARMTexture,
     normalMap: floorNormalTexture,
     displacementMap: floorDisplacementTexture,
+    displacementScale: 0.3,
   })
 );
 floor.rotation.x = -Math.PI * 0.5;
 scene.add(floor);
+
+gui
+  .add(floor.material, "displacementScale")
+  .min(0)
+  .max(1)
+  .step(0.001)
+  .name("floorDisplacementScale");
+gui
+  .add(floor.material, "displacementBias")
+  .min(-1)
+  .max(1)
+  .step(0.001)
+  .name("floorDisplacementBias");
 
 /**
  * Lights
