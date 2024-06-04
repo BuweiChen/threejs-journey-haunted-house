@@ -267,6 +267,12 @@ gui
   .step(0.001)
   .name("floorDisplacementBias");
 
+// Ghosts
+const ghost1 = new THREE.PointLight(0x8800ff, 6);
+const ghost2 = new THREE.PointLight(0xff0088, 6);
+const ghost3 = new THREE.PointLight(0xff0088, 6);
+scene.add(ghost1, ghost2, ghost3);
+
 /**
  * Lights
  */
@@ -343,6 +349,11 @@ const tick = () => {
   // Timer
   timer.update();
   const elapsedTime = timer.getElapsed();
+
+  // Ghosts
+  const ghost1Angle = elapsedTime * 0.5;
+  ghost1.position.x = Math.cos(ghost1Angle) * 4;
+  ghost1.position.z = Math.sin(ghost1Angle) * 4;
 
   // Update controls
   controls.update();
